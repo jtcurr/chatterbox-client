@@ -21,10 +21,11 @@ $('document').ready(function() {
           if (roomArr.indexOf(message[i].roomname) === -1) {
             roomArr.push(message[i].roomname);
           }
-          if(message[i].roomname === room){
+          if (message[i].roomname === room) {
             app.renderMessage(message[i]);
           }
         }
+        console.log('yes');
         app.makeMenu(roomArr);
         app.clickHandlers(roomArr);
       },
@@ -36,25 +37,19 @@ $('document').ready(function() {
   };
 
   app.makeMenu = function(arr) {
-    $('myDropdown').empty();
-  console.log(arr);
+    $('#dropdown').empty();
     for (var i = 0; i < arr.length; i++) {
-      var item = '<a class ="room" id =' + i + '>' + arr[i] + '</a>'; 
-      $('#myDropdown').append(item);
+      var item = '<option value =' + i + '>' + arr[i] + '</option>'; 
+      $('#dropdown').append(item);
     }
   };
 
   app.clickHandlers = function(rooms) {
-    for (var i = 0; i < roomArr.length; i++) {
-      var num = i;
-      var room = "#" + i;
-      $(room).on('click', function(e, num) {
-        console.log(num);
-        app.clearMessages();
-        
-        app.renderRoom(rooms[i]);
-      });
-    }
+    $(".button2").on('click', function(e) {
+      var roomSel = $("#dropdown :selected").text();
+      app.clearMessages();
+      app.renderRoom(roomSel);
+    });
   };
 
   app.init = function() {};
