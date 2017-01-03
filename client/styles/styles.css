@@ -65,7 +65,7 @@ form input[type=text] {
     background-color: #eee;
 }
 
-.chat .username {
+.chats .username { 
     font-weight: 800;
 }
 
@@ -87,4 +87,5 @@ form input[type=text] {
     color: #fff;
     background-color: #0090da;
 }
+
 
