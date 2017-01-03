@@ -17,7 +17,7 @@ $('document').ready(function() {
         console.log('chatterbox: Message received');
         $('.chats').empty();
         for (var i = message.length - 1; i >= 0; i--) {
-          renMessage(message[i]);
+          app.renderMessage(message[i]);
         }
       },
       error: function (data) {
@@ -26,22 +26,21 @@ $('document').ready(function() {
       }
     });
 
-    app.init = function() {
-      app.fetch();
-    };
+  app.init = function() {};
+  app.fetch = function(){};
+  app.clearMessages = function(){};
+  app.renderRoom = function(){};
+  app.renderMessage = function (collection) {
+    var $userName = ('<div class="username">' + collection.username + '</div>');
+    var $message = ('<div class="chat">' + collection.text + '</div>');
+    $('.chats').append($userName).append($message);
+  };
+  $('.button').on('click', function(e) {
+    e.preventDefault();
+    app.send(document.getElementById("sub").value);
+  });
 
-
-    var renMessage = function (collection) {
-      var $userName = ('<div class="username">' + collection.username + '</div>');
-      var $message = ('<div class="chat">' + collection.text + '</div>');
-      $('.chats').append($userName).append($message);
-    };
-    $('.button').on('click', function(e) {
-      e.preventDefault();
-      app.send(document.getElementById("sub").value);
-    });
-
-    app.send = function(msg) {
+  app.send = function(msg) {
     $.ajax({
     // This is the url you should use to communicate with the parse API server.
       url: 'https://api.parse.com/1/classes/messages',
@@ -61,9 +60,9 @@ $('document').ready(function() {
         console.error('chatterbox: Failed to send message', data);
       }
     });
-};
-  });
-app.init();
+  };
+
+});
 
 
 
