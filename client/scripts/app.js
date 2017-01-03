@@ -1,35 +1,39 @@
 var app = {};
 $('document').ready(function() {
-    app.server = 'https://api.parse.com/1/classes/messages';
+  app.server = 'https://api.parse.com/1/classes/messages';
  // setInterval (function() {
-    app = $.ajax({
+  app = $.ajax({
   // This is the url you should use to communicate with the parse API server.
-      url: app.server,
-      type: 'GET',
-     // data: '/calendar/getData.php',
-      dataType: 'json',
-      data: {
-        order: '-createdAt'
-      },
-      contentType: 'application/json',
-      success: function (data) {
-        var message = data.results;
-        console.log('chatterbox: Message received');
-        $('.chats').empty();
-        for (var i = message.length - 1; i >= 0; i--) {
-          app.renderMessage(message[i]);
-        }
-      },
-      error: function (data) {
-    // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-        console.error('chatterbox: Failed to send message', data);
+    url: app.server,
+    type: 'GET',
+       // data: '/calendar/getData.php',
+    dataType: 'json',
+    data: {
+      order: '-createdAt'
+    },
+    contentType: 'application/json',
+    success: function (data) {
+      var message = data.results;
+      console.log('chatterbox: Message received');
+      $('.chats').empty();
+      for (var i = message.length - 1; i >= 0; i--) {
+        app.renderMessage(message[i]);
       }
-    });
+    },
+    error: function (data) {
+  // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+    console.error('chatterbox: Failed to send message', data);
+    }  
+  });
 
   app.init = function() {};
+
   app.fetch = function(){};
+
   app.clearMessages = function(){};
+
   app.renderRoom = function(){};
+  
   app.renderMessage = function (collection) {
     var $userName = ('<div class="username">' + collection.username + '</div>');
     var $message = ('<div class="chat">' + collection.text + '</div>');

@@ -88,7 +88,7 @@ form input[type=text] {
     background-color: #0090da;
 }
 .dropbtn {
-    background-color: #4CAF50;
+    background-color: #5d93f7;
     color: white;
     padding: 16px;
     font-size: 16px;
@@ -97,7 +97,7 @@ form input[type=text] {
 }
 
 .dropbtn:hover, .dropbtn:focus {
-    background-color: #3e8e41;
+    background-color: #5d93f7;
 }
 #myInput {
     border-box: box-sizing;
