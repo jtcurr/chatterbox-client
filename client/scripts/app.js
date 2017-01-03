@@ -1,38 +1,54 @@
 var app = {};
 $('document').ready(function() {
   app.server = 'https://api.parse.com/1/classes/messages';
- // setInterval (function() {
-  app = $.ajax({
+  app.fetch = function() {
+    $.ajax({
   // This is the url you should use to communicate with the parse API server.
-    url: app.server,
-    type: 'GET',
-       // data: '/calendar/getData.php',
-    dataType: 'json',
-    data: {
-      order: '-createdAt'
-    },
-    contentType: 'application/json',
-    success: function (data) {
-      var message = data.results;
-      console.log('chatterbox: Message received');
-      $('.chats').empty();
-      for (var i = message.length - 1; i >= 0; i--) {
-        app.renderMessage(message[i]);
-      }
-    },
-    error: function (data) {
-  // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
-    console.error('chatterbox: Failed to send message', data);
-    }  
-  });
-
+      url: app.server,
+      type: 'GET',
+         // data: '/calendar/getData.php',
+      dataType: 'json',
+      data: {
+        order: '-createdAt'
+      },
+      contentType: 'application/json',
+      success: function (data) {
+        $('.chats').empty();
+        var message = data.results;
+        console.log('chatterbox: Message received');
+        var roomArr = [];
+        for (var i = 0; i < 40; i++) {
+          if (roomArr.indexOf(message[i].roomname) === -1) {
+            roomArr.push(message[i].roomname);
+          }
+          app.renderMessage(message[i]);
+        }
+        app.makeMenu(roomArr);
+      },
+      error: function (data) {
+    // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
+        console.error('chatterbox: Failed to send message', data);
+      }  
+    });
+  };
+  app.makeMenu = function(arr) {
+    $('myDropdown').empty();
+  console.log(arr);
+    for (var i = 0; i < arr.length; i++) {
+      var item = '<a class ="room" id = "i">' + arr[i] + '</a>'; 
+      $('#myDropdown').append(item);
+    }
+  };
   app.init = function() {};
 
-  app.fetch = function(){};
+  app.clearMessages = function() {
+    $('.chats').empty();
+  };
 
-  app.clearMessages = function(){};
-
-  app.renderRoom = function(){};
+  app.renderRoom = function() {
+    app.fetch();
+  };
+  app.renderRoom();
   
   app.renderMessage = function (collection) {
     var $userName = ('<div class="username">' + collection.username + '</div>');
@@ -42,6 +58,7 @@ $('document').ready(function() {
   $('.button').on('click', function(e) {
     e.preventDefault();
     app.send(document.getElementById("sub").value);
+    document.getElementById("sub").value = "";
   });
 
   app.send = function(msg) {
@@ -56,7 +73,6 @@ $('document').ready(function() {
       }),
       contentType: 'application/json',
       success: function (data) {
-        console.log(data);
         console.log('chatterbox: Message POSTED');
       },
       error: function (data) {
