@@ -84,8 +84,7 @@ form input[type=text] {
 }
 
 .friend {
-    color: #fff;
-    background-color: #0090da;
+    font-color: green;
 }
 .dropbtn {
     background-color: #5d93f7;
