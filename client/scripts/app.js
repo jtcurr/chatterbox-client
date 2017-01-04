@@ -81,7 +81,7 @@ $('document').ready(function() {
     app.fetch(room);
   };
 
-  app.init("lobby");
+  app.init('lobby');
 
 
 
@@ -91,12 +91,12 @@ $('document').ready(function() {
   
   app.renderMessage = function (collection) {
     var badChars = ['&', '<', '>', '"', "'", '`', '@', '$', '%', '(', ')', '=', '+', '{', '}', '[', ']'];
-    for(var i = 0; i < badChars.length; i++){
+    for (var i = 0; i < badChars.length; i++) {
 
-      if(collection.text === undefined || collection.username === undefined) {
+      if (collection.text === undefined || collection.username === undefined) {
         return;
       }
-      if(collection.text.indexOf(badChars[i]) !== -1 || collection.username.indexOf(badChars[i]) !== -1){
+      if (collection.text.indexOf(badChars[i]) !== -1 || collection.username.indexOf(badChars[i]) !== -1) {
         return;
       }
     }
@@ -106,24 +106,24 @@ $('document').ready(function() {
     $('.chats').append($userName).append($message);
     $('#chats').append('<div></div>');
     $('#' + collection.username).on('click', function() {
-    if (friends.indexOf(collection.username) === -1) {
-      friends.push(collection.username);
-    }
+      if (friends.indexOf(collection.username) === -1) {
+        friends.push(collection.username);
+      }
       $('#' + collection.username).addClass('friend');
     });
   };
 
   $('.button').on('click', function(e) {
     e.preventDefault();
-    var msg = document.getElementById("sub").value;
-    var room = $("#dropdown :selected").text();
+    var msg = document.getElementById('sub').value;
+    var room = $('#dropdown :selected').text();
     var user = window.location.search.slice(10);
     var obj = {
       username: user,
       text: msg,
-      roomname: room}
+      roomname: room};
     app.send(obj);
-    document.getElementById("sub").value = "";
+    document.getElementById('sub').value = '';
   });
 
   app.send = function(message) {
