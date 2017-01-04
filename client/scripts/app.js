@@ -3,8 +3,9 @@ var friends = [];
 $('document').ready(function() {
   var roomArr = ["Create new room"];
   app.server = 'https://api.parse.com/1/classes/messages';
+
   app.fetch = function() {
-    var room = arguments[0] || "null";
+    var room = arguments[0] || "herpaderp";
     $.ajax({
       url: app.server,
       type: 'GET',
@@ -27,8 +28,9 @@ $('document').ready(function() {
         }
         $('.roomName').empty();
         $('.roomName').append(room);
+
          app.makeMenu(roomArr);
-         app.clickHandlers(roomArr);
+         //app.clickHandlers(roomArr);
       },
       error: function (data) {
     // See: https://developer.mozilla.org/en-US/docs/Web/API/console.error
@@ -36,8 +38,6 @@ $('document').ready(function() {
       }  
     });
   };
-
-  console.log(roomArr);
   app.makeMenu = function(arr) {
     $('#dropdown').empty();
     for (var i = 0; i < arr.length; i++) {
@@ -46,24 +46,23 @@ $('document').ready(function() {
     }
   };
 
-  app.clickHandlers = function(rooms) {
-    $(".button2").on('click', function(e) {
-      var roomSel = $("#dropdown :selected").text();
-      if (roomSel === "Create new room") {
-        var newRoom = prompt("Enter room name");
-        if (rooms.indexOf(newRoom) === -1) {
-          rooms.push(newRoom);
-          $('#dropdown').append(newRoom);
-          app.clearMessages();
-          app.renderRoom(newRoom);
-        }
+  $(".button2").on('click', function(e) {
+    var roomSel = $("#dropdown :selected").text();
+    if (roomSel === "Create new room") {
+      var newRoom = prompt("Enter room name");
+      if (roomArr.indexOf(newRoom) === -1) {
+        roomArr.push(newRoom);
+        $('#dropdown').append(newRoom);
+        app.clearMessages();
+        app.renderRoom(newRoom);
       }
-      else {
-      app.clearMessages();
-      app.renderRoom(roomSel);
-      }
-    });
-  };
+    }
+    else {
+    app.clearMessages();
+    app.renderRoom(roomSel);
+    }
+  });
+
 
   app.init = function() {
     app.renderRoom();
@@ -77,20 +76,29 @@ $('document').ready(function() {
   app.renderRoom = function(room) {
     app.fetch(room);
   };
+
   app.init("lobby");
 
   
   app.renderMessage = function (collection) {
+    var badChars = ['&', '<', '>', '"', "'", '`', '@', '$', '%', '(', ')', '=', '+', '{', '}', '[', ']'];
+    for(var i = 0; i < badChars.length; i++){
+
+      if(collection.text === undefined || collection.username === undefined) {
+        return;
+      }
+      if(collection.text.indexOf(badChars[i]) !== -1 || collection.username.indexOf(badChars[i]) !== -1){
+        return;
+      }
+    }
     var $userName = ('<div class="username" id=' + collection.username + '>' + collection.username + '</div>');
     var $message = ('<div class="chat">' + collection.text + '</div>');
     $('.chats').append($userName).append($message);
     $('#' + collection.username).on('click', function() {
     if (friends.indexOf(collection.username) === -1) {
       friends.push(collection.username);
-      $('#' + collection.username).addClass('friend');
-      console.log(friends);
     }
-    
+      $('#' + collection.username).addClass('friend');
     });
   };
 
